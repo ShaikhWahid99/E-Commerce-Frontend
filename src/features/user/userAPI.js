@@ -1,33 +1,28 @@
 export function fetchLoggedInUserOrders() {
-  return new Promise(async (resolve) =>{
-    const response = await fetch('http://localhost:8080/api/orders/own/') 
-    const data = await response.json()
-    resolve({data})
-  }
-  );
+  return new Promise(async (resolve) => {
+    const response = await fetch("/api/orders/own/");
+    const data = await response.json();
+    resolve({ data });
+  });
 }
 
-
 export function fetchLoggedInUser() {
-  return new Promise(async (resolve) =>{
-    const response = await fetch('http://localhost:8080/api/users/own') 
-    const data = await response.json()
-    resolve({data})
-  }
-  );
+  return new Promise(async (resolve) => {
+    const response = await fetch("/api/users/own");
+    const data = await response.json();
+    resolve({ data });
+  });
 }
 
 export function updateUser(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/api/users/'+update.id, {
-      method: 'PATCH',
+    const response = await fetch("/api/users/" + update.id, {
+      method: "PATCH",
       body: JSON.stringify(update),
-      headers: { 'content-type': 'application/json' },
+      headers: { "content-type": "application/json" },
     });
     const data = await response.json();
     // TODO: on server it will only return some info of user (not password)
     resolve({ data });
   });
 }
-
-

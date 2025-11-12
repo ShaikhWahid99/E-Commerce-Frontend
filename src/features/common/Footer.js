@@ -1,43 +1,56 @@
 function Footer() {
   return (
     <>
-      <div className=" bg-gray-900">
-        <div className="max-w-2xl mx-auto text-white py-10">
+      <div className="bg-gray-900 w-full">
+        <div className="max-w-7xl mx-auto text-white py-10 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h3 className="text-3xl mb-3"> Download our Ecommerce App </h3>
-            <p> Buy what you want. </p>
-            <div className="flex justify-center my-10">
-              <div className="flex items-center border w-auto rounded-lg px-4 py-2 w-52 mx-2">
+            <h3 className="text-2xl sm:text-3xl mb-3 font-semibold">
+              Download our Ecommerce App
+            </h3>
+            <p className="text-sm sm:text-base">Buy what you want.</p>
+            <div className="flex flex-col items-center gap-4 my-10 sm:flex-row sm:justify-center">
+              <div className="flex items-center border border-gray-600 bg-gray-800 rounded-lg px-4 py-3 w-full max-w-xs sm:w-60 sm:mx-2 transition-all hover:scale-105">
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/888/888857.png"
-                  className="w-7 md:w-8"
+                  alt="Google Play Store"
+                  className="w-8 h-8"
                 />
                 <div className="text-left ml-3">
-                  <p className="text-xs text-gray-200">Download on </p>
-                  <p className="text-sm md:text-base"> Google Play Store </p>
+                  <p className="text-xs text-gray-300">Download on</p>
+                  <p className="text-sm sm:text-base whitespace-nowrap font-medium">
+                    Google Play Store
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center border w-auto rounded-lg px-4 py-2 w-44 mx-2">
+              <div className="flex items-center border border-gray-600 bg-gray-800 rounded-lg px-4 py-3 w-full max-w-xs sm:w-56 sm:mx-2 transition-all hover:scale-105">
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/888/888841.png"
-                  className="w-7 md:w-8"
+                  alt="Apple Store"
+                  className="w-8 h-8"
                 />
                 <div className="text-left ml-3">
-                  <p className="text-xs text-gray-200">Download on </p>
-                  <p className="text-sm md:text-base"> Apple Store </p>
+                  <p className="text-xs text-gray-300">Download on</p>
+                  <p className="text-sm sm:text-base whitespace-nowrap font-medium">
+                    Apple Store
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-28 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-400">
-            <p className="order-2 md:order-1 mt-8 md:mt-0">
-              {' '}
-              © CoderDost, 2023.{' '}
+          <div className="mt-16 sm:mt-24 flex flex-col sm:flex-row sm:justify-between items-center text-xs sm:text-sm text-gray-400 gap-2">
+            <p className="order-2 sm:order-1 mt-4 sm:mt-0 text-center">
+              © CoderDost, 2023.
             </p>
-            <div className="order-1 md:order-2">
-              <span className="px-2">About us</span>
-              <span className="px-2 border-l">Contact us</span>
-              <span className="px-2 border-l">Privacy Policy</span>
+            <div className="order-1 sm:order-2 flex flex-col sm:flex-row text-center">
+              <span className="px-2 py-1 hover:text-white transition-colors cursor-pointer">
+                About us
+              </span>
+              <span className="px-2 py-1 border-t sm:border-t-0 sm:border-l border-gray-500 hover:text-white transition-colors cursor-pointer">
+                Contact us
+              </span>
+              <span className="px-2 py-1 border-t sm:border-t-0 sm:border-l border-gray-500 hover:text-white transition-colors cursor-pointer">
+                Privacy Policy
+              </span>
             </div>
           </div>
         </div>

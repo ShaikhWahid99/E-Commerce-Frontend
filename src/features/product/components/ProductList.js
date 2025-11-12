@@ -1,5 +1,5 @@
-import React, { useState, Fragment, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, Fragment, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   fetchBrandsAsync,
   fetchCategoriesAsync,
@@ -9,34 +9,34 @@ import {
   selectCategories,
   selectProductListStatus,
   selectTotalItems,
-} from '../productSlice';
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+} from "../productSlice";
+import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   StarIcon,
-} from '@heroicons/react/20/solid';
-import { Link } from 'react-router-dom';
+} from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
 import {
   ChevronDownIcon,
   FunnelIcon,
   MinusIcon,
   PlusIcon,
   Squares2X2Icon,
-} from '@heroicons/react/20/solid';
-import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
-import Pagination from '../../common/Pagination';
-import { Grid } from 'react-loader-spinner';
+} from "@heroicons/react/20/solid";
+import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
+import Pagination from "../../common/Pagination";
+import { Grid } from "react-loader-spinner";
 
 const sortOptions = [
-  { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
-  { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
-  { name: 'Price: High to Low', sort: 'price', order: 'desc', current: false },
+  { name: "Best Rating", sort: "rating", order: "desc", current: false },
+  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
+  { name: "Price: High to Low", sort: "price", order: "desc", current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductList() {
@@ -48,13 +48,13 @@ export default function ProductList() {
   const status = useSelector(selectProductListStatus);
   const filters = [
     {
-      id: 'category',
-      name: 'Category',
+      id: "category",
+      name: "Category",
       options: categories,
     },
     {
-      id: 'brand',
-      name: 'Brands',
+      id: "brand",
+      name: "Brands",
       options: brands,
     },
   ];
@@ -67,7 +67,6 @@ export default function ProductList() {
   const handleFilter = (e, section, option) => {
     console.log(e.target.checked);
     const newFilter = { ...filter };
-    // TODO : on server it will support multiple categories
     if (e.target.checked) {
       if (newFilter[section.id]) {
         newFilter[section.id].push(option.value);
@@ -99,7 +98,6 @@ export default function ProductList() {
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
     dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
-    // TODO : Server will filter deleted products
   }, [dispatch, filter, sort, page]);
 
   useEffect(() => {
@@ -122,12 +120,12 @@ export default function ProductList() {
         ></MobileFilter>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between border-b border-gray-200 pb-6 pt-24">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               All Products
             </h1>
 
-            <div className="flex items-center">
+            <div className="flex items-center justify-between sm:justify-end flex-wrap gap-3 w-full sm:w-auto">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
@@ -148,7 +146,7 @@ export default function ProductList() {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="absolute left-0 sm:right-0 sm:left-auto z-10 mt-2 w-48 origin-top-left sm:origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
@@ -157,10 +155,10 @@ export default function ProductList() {
                               onClick={(e) => handleSort(e, option)}
                               className={classNames(
                                 option.current
-                                  ? 'font-medium text-gray-900'
-                                  : 'text-gray-500',
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm'
+                                  ? "font-medium text-gray-900"
+                                  : "text-gray-500",
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm cursor-pointer"
                               )}
                             >
                               {option.name}
@@ -173,21 +171,23 @@ export default function ProductList() {
                 </Transition>
               </Menu>
 
-              <button
-                type="button"
-                className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
-              >
-                <span className="sr-only">View grid</span>
-                <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
-                onClick={() => setMobileFiltersOpen(true)}
-              >
-                <span className="sr-only">Filters</span>
-                <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">View grid</span>
+                  <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="-m-2 p-2 text-gray-400 hover:text-gray-500 lg:hidden"
+                  onClick={() => setMobileFiltersOpen(true)}
+                >
+                  <span className="sr-only">Filters</span>
+                  <FunnelIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -402,7 +402,7 @@ function ProductGrid({ products, status }) {
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-          {status === 'loading' ? (
+          {status === "loading" ? (
             <Grid
               height="80"
               width="80"
@@ -426,7 +426,7 @@ function ProductGrid({ products, status }) {
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>
-                    <h3 className="text-sm text-gray-700">
+                    <h3 className="text-sm text-gray-700 break-words">
                       <div href={product.thumbnail}>
                         <span aria-hidden="true" className="absolute inset-0" />
                         {product.title}
@@ -437,7 +437,7 @@ function ProductGrid({ products, status }) {
                       <span className=" align-bottom">{product.rating}</span>
                     </p>
                   </div>
-                  <div>
+                  <div className="ml-2 text-right">
                     <p className="text-sm block font-medium text-gray-900">
                       ${discountedPrice(product)}
                     </p>
@@ -456,7 +456,6 @@ function ProductGrid({ products, status }) {
                     <p className="text-sm text-red-400">out of stock</p>
                   </div>
                 )}
-                {/* TODO: will not be needed when backend is implemented */}
               </div>
             </Link>
           ))}

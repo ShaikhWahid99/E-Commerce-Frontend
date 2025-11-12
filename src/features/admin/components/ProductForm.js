@@ -51,16 +51,16 @@ function ProductForm() {
     },
   ];
 
-  const sizes = [
-    { name: "XXS", inStock: true, id: "xxs" },
-    { name: "XS", inStock: true, id: "xs" },
-    { name: "S", inStock: true, id: "s" },
-    { name: "M", inStock: true, id: "m" },
-    { name: "L", inStock: true, id: "l" },
-    { name: "XL", inStock: true, id: "xl" },
-    { name: "2XL", inStock: true, id: "2xl" },
-    { name: "3XL", inStock: true, id: "3xl" },
-  ];
+  // const sizes = [
+  //   { name: "XXS", inStock: true, id: "xxs" },
+  //   { name: "XS", inStock: true, id: "xs" },
+  //   { name: "S", inStock: true, id: "s" },
+  //   { name: "M", inStock: true, id: "m" },
+  //   { name: "L", inStock: true, id: "l" },
+  //   { name: "XL", inStock: true, id: "xl" },
+  //   { name: "2XL", inStock: true, id: "2xl" },
+  //   { name: "3XL", inStock: true, id: "3xl" },
+  // ];
 
   useEffect(() => {
     if (params.id) {
@@ -127,9 +127,9 @@ function ProductForm() {
           product.colors = product.colors.map((color) =>
             colors.find((clr) => clr.id === color)
           );
-          product.sizes = product.sizes.map((size) =>
-            sizes.find((sz) => sz.id === size)
-          );
+          // product.sizes = product.sizes.map((size) =>
+          //   sizes.find((sz) => sz.id === size)
+          // );
 
           delete product["image1"];
           delete product["image2"];
@@ -148,7 +148,6 @@ function ProductForm() {
           } else {
             dispatch(createProductAsync(product));
             alert.success("Product Created");
-            // TODO: these alerts should check if API failed
             reset();
           }
         })}
@@ -242,15 +241,17 @@ function ProductForm() {
                 </label>
                 <div className="mt-2">
                   {colors.map((color) => (
-                    <>
+                    <div
+                      key={color.id}
+                      className="inline-flex items-center mr-4"
+                    >
                       <input
                         type="checkbox"
                         {...register("colors", {})}
-                        key={color.id}
                         value={color.id}
                       />{" "}
                       {color.name}
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -612,6 +613,7 @@ function ProductForm() {
           <button
             type="button"
             className="text-sm font-semibold leading-6 text-gray-900"
+            onClick={() => window.history.back()}
           >
             Cancel
           </button>

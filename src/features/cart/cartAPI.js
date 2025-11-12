@@ -6,14 +6,12 @@ export function addToCart(item) {
       headers: { "content-type": "application/json" },
     });
     const data = await response.json();
-    // TODO: on server it will only return some info of user (not password)
     resolve({ data });
   });
 }
 
 export function fetchItemsByUserId() {
   return new Promise(async (resolve) => {
-    //TODO: we will not hard-code server URL here
     const response = await fetch("/api/cart");
     const data = await response.json();
     resolve({ data });
@@ -28,7 +26,6 @@ export function updateCart(update) {
       headers: { "content-type": "application/json" },
     });
     const data = await response.json();
-    // TODO: on server it will only return some info of user (not password)
     resolve({ data });
   });
 }
@@ -40,13 +37,11 @@ export function deleteItemFromCart(itemId) {
       headers: { "content-type": "application/json" },
     });
     const data = await response.json();
-    // TODO: on server it will only return some info of user (not password)
     resolve({ data: { id: itemId } });
   });
 }
 
 export function resetCart() {
-  // get all items of user's cart - and then delete each
   return new Promise(async (resolve) => {
     const response = await fetchItemsByUserId();
     const items = response.data;

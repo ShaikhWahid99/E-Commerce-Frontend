@@ -25,8 +25,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// TODO : Loading UI
-
 export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState();
   const [selectedSize, setSelectedSize] = useState();
@@ -40,7 +38,6 @@ export default function ProductDetail() {
   const handleCart = (e) => {
     e.preventDefault();
     if (items.findIndex((item) => item.product.id === product.id) < 0) {
-      console.log({ items, product });
       const newItem = {
         product: product.id,
         quantity: 1,
@@ -51,9 +48,7 @@ export default function ProductDetail() {
       if (selectedSize) {
         newItem.size = selectedSize;
       }
-
       dispatch(addToCartAsync(newItem));
-      // TODO: it will be based on server response of backend
       alert.success("Item added to Cart");
     } else {
       alert.error("Item Already added");
@@ -67,21 +62,23 @@ export default function ProductDetail() {
   return (
     <div className="bg-white">
       {status === "loading" ? (
-        <Grid
-          height="80"
-          width="80"
-          color="rgb(79, 70, 229) "
-          ariaLabel="grid-loading"
-          radius="12.5"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-        />
+        <div className="flex justify-center items-center min-h-[200px]">
+          <Grid
+            height="80"
+            width="80"
+            color="rgb(79, 70, 229)"
+            ariaLabel="grid-loading"
+            radius="12.5"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        </div>
       ) : null}
       {product && (
-        <div className="pt-6">
-          <nav aria-label="Breadcrumb">
-            <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="pt-4 sm:pt-6">
+          <nav aria-label="Breadcrumb" className="mb-2">
+            <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8 overflow-x-auto whitespace-nowrap">
               {product.breadcrumbs &&
                 product.breadcrumbs.map((breadcrumb) => (
                   <li key={breadcrumb.id}>
@@ -117,44 +114,66 @@ export default function ProductDetail() {
             </ol>
           </nav>
 
-          {/* Image gallery */}
-          <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-            <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                className="h-full w-full object-cover object-center"
-              />
+          {/* Responsive Image gallery */}
+          <div className="mx-auto mt-4 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full">
+            {/* Mobile image carousel */}
+            <div className="block lg:hidden">
+              <div className="flex space-x-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                {product.images &&
+                  product.images.map((img, idx) => (
+                    <div
+                      className="shrink-0 w-44 h-44 rounded-lg overflow-hidden border border-gray-200"
+                      key={img + idx}
+                    >
+                      <img
+                        src={img}
+                        alt={product.title}
+                        className="w-full h-full object-cover object-center"
+                      />
+                    </div>
+                  ))}
+              </div>
             </div>
-            <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+            {/* Desktop image gallery */}
+            <div className="hidden lg:grid lg:grid-cols-3 lg:gap-x-8">
+              <div className="aspect-w-3 aspect-h-4 overflow-hidden rounded-lg">
                 <img
-                  src={product.images[1]}
+                  src={product.images[0]}
                   alt={product.title}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
-              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+              <div className="grid grid-cols-1 gap-y-8">
+                <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
+                  <img
+                    src={product.images[1]}
+                    alt={product.title}
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+                <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
+                  <img
+                    src={product.images[2]}
+                    alt={product.title}
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+              </div>
+              <div className="aspect-w-4 aspect-h-5 lg:aspect-w-3 lg:aspect-h-4 overflow-hidden rounded-lg">
                 <img
-                  src={product.images[2]}
+                  src={product.images[3]}
                   alt={product.title}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
-            </div>
-            <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-              <img
-                src={product.images[3]}
-                alt={product.title}
-                className="h-full w-full object-cover object-center"
-              />
             </div>
           </div>
 
-          {/* Product info */}
-          <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+          {/* Product info - responsive two column on desktop, single on mobile */}
+          <div className="mx-auto max-w-2xl px-4 pb-10 pt-6 sm:px-6 lg:max-w-7xl lg:px-8 lg:pt-10 lg:pb-24 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
+            {/* Title section */}
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                 {product.title}
               </h1>
             </div>
@@ -162,15 +181,17 @@ export default function ProductDetail() {
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-xl line-through tracking-tight text-gray-900">
-                ${product.price}
-              </p>
-              <p className="text-3xl tracking-tight text-gray-900">
-                ${discountedPrice(product)}
-              </p>
+              <div className="flex items-center gap-3">
+                <p className="text-base sm:text-xl line-through tracking-tight text-gray-900 opacity-70">
+                  ${product.price}
+                </p>
+                <p className="text-xl sm:text-2xl md:text-3xl tracking-tight text-gray-900 font-bold">
+                  ${discountedPrice(product)}
+                </p>
+              </div>
 
               {/* Reviews */}
-              <div className="mt-6">
+              <div className="mt-4">
                 <h3 className="sr-only">Reviews</h3>
                 <div className="flex items-center">
                   <div className="flex items-center">
@@ -187,28 +208,29 @@ export default function ProductDetail() {
                       />
                     ))}
                   </div>
-                  <p className="sr-only">{product.rating} out of 5 stars</p>
+                  <p className="ml-2 text-xs text-gray-500">
+                    {product.rating} / 5
+                  </p>
                 </div>
               </div>
 
-              <form className="mt-10">
+              <form className="mt-8">
                 {/* Colors */}
                 {product.colors && product.colors.length > 0 && (
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Color</h3>
-
                     <RadioGroup
                       value={selectedColor}
                       onChange={setSelectedColor}
-                      className="mt-4"
+                      className="mt-2"
                     >
                       <RadioGroup.Label className="sr-only">
                         Choose a color
                       </RadioGroup.Label>
-                      <div className="flex items-center space-x-3">
-                        {product.colors.map((color) => (
+                      <div className="flex flex-wrap gap-2">
+                        {product.colors.map((color, index) => (
                           <RadioGroup.Option
-                            key={color.name}
+                            key={color.name || `color-${index}`}
                             value={color}
                             className={({ active, checked }) =>
                               classNames(
@@ -236,106 +258,23 @@ export default function ProductDetail() {
                   </div>
                 )}
 
-                {/* Sizes
-                {product.sizes && product.sizes.length > 0 && (
-                  <div className="mt-10">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-medium text-gray-900">
-                        Size
-                      </h3>
-                      <a
-                        href="#"
-                        className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                      >
-                        Size guide
-                      </a>
-                    </div>
-
-                    <RadioGroup
-                      value={selectedSize}
-                      onChange={setSelectedSize}
-                      className="mt-4"
-                    >
-                      <RadioGroup.Label className="sr-only">
-                        Choose a size
-                      </RadioGroup.Label>
-                      <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                        {product.sizes.map((size) => (
-                          <RadioGroup.Option
-                            key={size.name}
-                            value={size}
-                            disabled={!size.inStock}
-                            className={({ active }) =>
-                              classNames(
-                                size.inStock
-                                  ? "cursor-pointer bg-white text-gray-900 shadow-sm"
-                                  : "cursor-not-allowed bg-gray-50 text-gray-200",
-                                active ? "ring-2 ring-indigo-500" : "",
-                                "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
-                              )
-                            }
-                          >
-                            {({ active, checked }) => (
-                              <>
-                                <RadioGroup.Label as="span">
-                                  {size.name}
-                                </RadioGroup.Label>
-                                {size.inStock ? (
-                                  <span
-                                    className={classNames(
-                                      active ? "border" : "border-2",
-                                      checked
-                                        ? "border-indigo-500"
-                                        : "border-transparent",
-                                      "pointer-events-none absolute -inset-px rounded-md"
-                                    )}
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <span
-                                    aria-hidden="true"
-                                    className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
-                                  >
-                                    <svg
-                                      className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
-                                      viewBox="0 0 100 100"
-                                      preserveAspectRatio="none"
-                                      stroke="currentColor"
-                                    >
-                                      <line
-                                        x1={0}
-                                        y1={100}
-                                        x2={100}
-                                        y2={0}
-                                        vectorEffect="non-scaling-stroke"
-                                      />
-                                    </svg>
-                                  </span>
-                                )}
-                              </>
-                            )}
-                          </RadioGroup.Option>
-                        ))}
-                      </div>
-                    </RadioGroup>
-                  </div>
-                )} */}
+                {/* Sizes (still commented out) */}
 
                 <button
                   onClick={handleCart}
                   type="submit"
-                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   Add to Cart
                 </button>
               </form>
             </div>
 
-            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+            {/* Description/Details Section */}
+            <div className="py-8 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
               {/* Description and details */}
               <div>
                 <h3 className="sr-only">Description</h3>
-
                 <div className="space-y-6">
                   <p className="text-base text-gray-900">
                     {product.description}
@@ -344,12 +283,11 @@ export default function ProductDetail() {
               </div>
 
               {product.highlights && (
-                <div className="mt-10">
+                <div className="mt-8">
                   <h3 className="text-sm font-medium text-gray-900">
                     Highlights
                   </h3>
-
-                  <div className="mt-4">
+                  <div className="mt-2">
                     <ul
                       role="list"
                       className="list-disc space-y-2 pl-4 text-sm"
@@ -364,10 +302,9 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              <div className="mt-10">
+              <div className="mt-8">
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
-
-                <div className="mt-4 space-y-6">
+                <div className="mt-2 space-y-6">
                   <p className="text-sm text-gray-600">{product.description}</p>
                 </div>
               </div>

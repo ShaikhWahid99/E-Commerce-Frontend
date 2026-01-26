@@ -39,7 +39,7 @@ function Footer() {
           </div>
           <div className="mt-16 sm:mt-24 flex flex-col sm:flex-row sm:justify-between items-center text-xs sm:text-sm text-gray-400 gap-2">
             <p className="order-2 sm:order-1 mt-4 sm:mt-0 text-center">
-              © CoderDost, 2023.
+              © SEM 5, 2024.
             </p>
             <div className="order-1 sm:order-2 flex flex-col sm:flex-row text-center">
               <span className="px-2 py-1 hover:text-white transition-colors cursor-pointer">

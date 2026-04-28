@@ -22,8 +22,14 @@ export function loginUser(loginInfo) {
         const data = await response.json();
         resolve({ data });
       } else {
-        const error = await response.text();
-        reject(error);
+        let errorMsg;
+        try {
+          const errData = await response.json();
+          errorMsg = errData.message || "An error occurred during login.";
+        } catch (e) {
+          errorMsg = "Server encountered an error or timed out, please try again later.";
+        }
+        reject(errorMsg);
       }
     } catch (error) {
       reject(error);
